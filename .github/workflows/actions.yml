@@ -1,0 +1,39 @@
+# .github/workflows/actions.yml
+
+name: Github Actions
+
+# push: github에 push할 때마다 실행
+on: push
+
+jobs:
+  push-job:
+    # 아래 문장은 필수적으로 넣어주기.
+    # specify that a job should run on the latest available Ubuntu virtual machine hosted by GitHub
+
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 코드 체크아웃 (거의 필수)
+      - name: 코드 가져오기
+        uses: actions/checkout@v3  # run 대신 uses (사전 정의된 액션)
+
+      # 2. Node.js 설치
+      - name: Node.js 설치
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      # 3. 의존성 설치
+      - name: 패키지 설치
+        run: npm install
+
+      # 4. 린트 검사
+      - name: ESLint 실행
+        run: npm run lint
+
+      # 5. 테스트 실행
+      - name: Jest 테스트
+        run: npm run test
+
+      # 6. 빌드
+      - name: 빌드
+        run: npm run build
